@@ -41,11 +41,29 @@
         a:hover {
             color: #CE1126; /* Red */
         }
-        footer {
+        .form-section {
+            margin-top: 30px;
             text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #006847;
+        }
+        .form-section h2 {
+            color: #CE1126; /* Red to match theme */
+        }
+        .form-section p {
+            margin-bottom: 20px;
+        }
+        .form-container {
+            border: 1px solid #006847; /* Green border */
+            padding: 15px;
+            border-radius: 8px;
+        }
+        iframe {
+            width: 100%;
+            max-width: 640px;
+            height: 689px; /* Matches your form's height */
+            border: none;
+        }
+        @media (max-width: 768px) {
+            iframe { height: 700px; } /* Slightly taller on mobile for better fit */
         }
     </style>
 </head>
@@ -59,9 +77,13 @@
             <li><a href="30_min_outline.html">30-Minute Lesson Outline</a></li>
             <li><a href="examples.html">Examples for Tasks by Category</a></li>
         </ul>
+        <div class="form-section">
+            <h2>Add Spanish Notes for Flashcards</h2>
+            <p>Tutors, please enter words, translations, or examples below during the lesson.</p>
+            <div class="form-container">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSewrEWI_uTXr4rD1b4HoLfBGwfdb2N4trVf4XgXjv8bcLe9ow/viewform?embedded=true" width="640" height="689" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
+        </div>
     </div>
-    <footer>
-        <p>Themed with Mexican Flag Colors: Green, White, Red | Updated: October 14, 2025</p>
-    </footer>
 </body>
 </html>
