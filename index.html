@@ -40,10 +40,13 @@
             margin: 0;
             color: #1DA1F2; /* Azul X */
             text-shadow: 0 0 10px rgba(29, 161, 242, 0.5); /* Glow IA-like */
+            display: inline-block;
+            cursor: pointer; /* Indica que es clickable */
         }
         h1::after {
             content: ' 🤖';
             animation: pulse 2s infinite;
+            display: inline-block;
         }
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -142,11 +145,56 @@
             color: #888888;
             width: 100%;
         }
+        /* Estilos para el modal de número aleatorio */
+        #random-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        #random-modal-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #1DA1F2;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 300px;
+            animation: fadeIn 0.5s ease;
+        }
+        #random-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1DA1F2;
+            text-shadow: 0 0 10px rgba(29, 161, 242, 0.5);
+            margin: 20px 0;
+        }
+        #close-modal {
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #FFFFFF;
+            border: 2px solid #1DA1F2;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        #close-modal:hover {
+            background-color: #1DA1F2;
+            color: #000000;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>SIELE S4 Study Guide</h1>
+        <h1 id="robot-title">SIELE S4 Study Guide</h1>
     </header>
     
     <div class="tasks-container">
@@ -184,6 +232,44 @@
     <footer>
     </footer>
     
+    <!-- Modal para el número aleatorio -->
+    <div id="random-modal">
+        <div id="random-modal-content">
+            <p>¡Tarea aleatoria generada!</p>
+            <div id="random-number"></div>
+            <button id="close-modal">Cerrar</button>
+        </div>
+    </div>
+    
     <script async src="https://tally.so/widgets/embed.js"></script>
+    <script>
+        // Solo el emoji es clickable usando event delegation en el h1
+        const title = document.getElementById('robot-title');
+        const modal = document.getElementById('random-modal');
+        const randomNumberEl = document.getElementById('random-number');
+        const closeModal = document.getElementById('close-modal');
+
+        title.addEventListener('click', function(e) {
+            // Detecta si el click fue aproximadamente en el emoji (al final del texto)
+            const rect = title.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            if (clickX > rect.width - 50) {  // Asume los últimos 50px son el emoji
+                const randomNum = Math.floor(Math.random() * 5) + 1;
+                randomNumberEl.textContent = randomNum;
+                modal.style.display = 'flex';
+            }
+        });
+
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Cerrar modal clickeando fuera
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
