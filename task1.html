@@ -216,23 +216,24 @@
             box-shadow: 0 10px 20px rgba(29, 161, 242, 0.2);
         }
         .image-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            justify-items: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
         }
         .image-container img {
             width: 100%;
-            max-width: 200px;
+            max-width: 600px;
             height: auto;
             border-radius: 10px;
             object-fit: cover;
+            border: 2px solid #1DA1F2;
             transition: transform 0.3s;
         }
         .image-container img:hover {
             transform: scale(1.05);
         }
-        .load-more-button {
+        .new-image-button {
             padding: 10px 20px;
             background-color: #FFFFFF;
             color: #000000;
@@ -246,7 +247,7 @@
             margin: 20px auto;
             display: block;
         }
-        .load-more-button:hover {
+        .new-image-button:hover {
             background-color: #1DA1F2;
             color: #FFFFFF;
         }
@@ -287,9 +288,9 @@
     <div class="image-feed-card">
         <h2>Galería de Imágenes</h2>
         <div class="image-container" id="imageContainer">
-            <!-- Initial images will be added here via JavaScript -->
+            <!-- Single image will be added here via JavaScript -->
         </div>
-        <button class="load-more-button" onclick="addNewImages()">Cargar Más</button>
+        <button class="new-image-button" onclick="loadNewImage()">Nueva Imagen</button>
     </div>
   
     <div class="contribute-section">
@@ -344,28 +345,29 @@
 
         // Image Feed Script
         const imageContainerEl = document.getElementById("imageContainer");
-        const imageNum = 6; // Number of images to load each time
 
-        function addNewImages() {
-            for (let index = 0; index < imageNum; index++) {
-                const newImgEl = document.createElement("img");
-                const randomNum = Math.floor(Math.random() * 2000);
-                newImgEl.src = `https://picsum.photos/300?random=${randomNum}`;
-                newImgEl.alt = "Imagen aleatoria para descripción";
-                
-                // Wrap image in an anchor tag to open in new tab
-                const linkEl = document.createElement("a");
-                linkEl.href = `https://picsum.photos/1200?random=${randomNum}`; // Higher resolution for new tab
-                linkEl.target = "_blank"; // Open in new tab
-                linkEl.rel = "noopener noreferrer"; // Security best practice
-                linkEl.appendChild(newImgEl);
-                
-                imageContainerEl.appendChild(linkEl);
-            }
+        function loadNewImage() {
+            // Clear previous image
+            imageContainerEl.innerHTML = '';
+            
+            // Create new image
+            const newImgEl = document.createElement("img");
+            const randomNum = Math.floor(Math.random() * 2000);
+            newImgEl.src = `https://picsum.photos/600/400?random=${randomNum}`;
+            newImgEl.alt = "Imagen aleatoria para descripción";
+            
+            // Wrap image in an anchor tag to open in new tab
+            const linkEl = document.createElement("a");
+            linkEl.href = `https://picsum.photos/1200/800?random=${randomNum}`; // Higher resolution for new tab
+            linkEl.target = "_blank"; // Open in new tab
+            linkEl.rel = "noopener noreferrer"; // Security best practice
+            linkEl.appendChild(newImgEl);
+            
+            imageContainerEl.appendChild(linkEl);
         }
 
-        // Load initial images when the page loads
-        addNewImages();
+        // Load initial image when the page loads
+        loadNewImage();
     </script>
 </body>
 </html>
