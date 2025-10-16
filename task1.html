@@ -6,7 +6,7 @@
     <title>Tarea 1 SIELE S4: Describir Imágenes | Grok Mode 🚀</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-       
+      
         body {
             margin: 0;
             padding: 40px 20px;
@@ -199,13 +199,63 @@
             background-color: #1DA1F2;
             color: #000000;
         }
+        /* Image Feed Styles */
+        .image-feed-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #1DA1F2;
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .image-feed-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(29, 161, 242, 0.2);
+        }
+        .image-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            justify-items: center;
+        }
+        .image-container img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+        .load-more-button {
+            padding: 10px 20px;
+            background-color: #FFFFFF;
+            color: #000000;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            display: block;
+        }
+        .load-more-button:hover {
+            background-color: #1DA1F2;
+            color: #FFFFFF;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Tarea 1 SIELE S4: Describir Imágenes</h1>
     </header>
-
     <!-- Timer Section -->
     <div class="timer-card">
         <h2>Temporizador</h2>
@@ -216,11 +266,11 @@
             <button class="timer-button" onclick="resetTimer()">Reiniciar</button>
         </div>
     </div>
-   
+  
     <div class="content-card">
         <h2>Descripción de la Tarea</h2>
         <p>Para la Tarea 1 del SIELE S4, el estudiante describe una imagen compleja en español para perfeccionar el vocabulario avanzado y la fluidez descriptiva.</p>
-       
+      
         <h2>Estructura del Ejercicio</h2>
         <ol>
             <li>Selecciona una imagen detallada </li>
@@ -228,38 +278,46 @@
             <li>Si el estudiante necesita ayuda, haz preguntas abiertas: "¿Qué historia podría contar esta imagen? ¿Qué elementos sugieren un contexto social o histórico específico?"</li>
             <li>Con los botones 'Add Flashcard' y 'Add Feedback' abajo, registra: (a) una corrección de pronunciación o gramática, (b) palabras de vocabulario avanzado para mejorar la fluidez.</li>
         </ol>
-       
+      
         <h2>Recursos</h2>
-        <p>Usa Google Image Search, Pinterest, Memes, Instagram para encontrar imágenes ricas y evocadoras.</p>
+        <p>Usa Google Image Search, Pinterest, Memes, Instagram para encontrar imágenes ricas y evocadoras. También puedes usar las imágenes de la galería a continuación para practicar la descripción.</p>
     </div>
-   
+  
+    <!-- Image Feed Section -->
+    <div class="image-feed-card">
+        <h2>Galería de Imágenes</h2>
+        <div class="image-container" id="imageContainer">
+            <!-- Initial images will be added here via JavaScript -->
+        </div>
+        <button class="load-more-button" onclick="addNewImages()">Cargar Más</button>
+    </div>
+  
     <div class="contribute-section">
         <div class="button-group">
             <button data-tally-open="nG2Jde" data-tally-hide-title="1" class="tally-button">Add Flashcard</button>
             <button data-tally-open="wo47OO" class="tally-button">Add Feedback</button>
         </div>
     </div>
-   
+  
     <div class="social-link">
         <a href="https://www.instagram.com/bajamigospanish">@bajamigospanish</a>
     </div>
-   
+  
     <footer>
     </footer>
-   
+  
     <script async src="https://tally.so/widgets/embed.js"></script>
     <script>
+        // Timer Script
         let timer;
         let seconds = 0;
         let isRunning = false;
-
         function updateTimerDisplay() {
             const minutes = Math.floor(seconds / 60);
             const secs = seconds % 60;
-            document.getElementById('timer').textContent = 
+            document.getElementById('timer').textContent =
                 `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
-
         function startTimer() {
             if (!isRunning) {
                 isRunning = true;
@@ -269,23 +327,45 @@
                 }, 1000);
             }
         }
-
         function stopTimer() {
             if (isRunning) {
                 isRunning = false;
                 clearInterval(timer);
             }
         }
-
         function resetTimer() {
             isRunning = false;
             clearInterval(timer);
             seconds = 0;
             updateTimerDisplay();
         }
-
         // Initialize timer display
         updateTimerDisplay();
+
+        // Image Feed Script
+        const imageContainerEl = document.getElementById("imageContainer");
+        const imageNum = 6; // Number of images to load each time
+
+        function addNewImages() {
+            for (let index = 0; index < imageNum; index++) {
+                const newImgEl = document.createElement("img");
+                const randomNum = Math.floor(Math.random() * 2000);
+                newImgEl.src = `https://picsum.photos/300?random=${randomNum}`;
+                newImgEl.alt = "Imagen aleatoria para descripción";
+                
+                // Wrap image in an anchor tag to open in new tab
+                const linkEl = document.createElement("a");
+                linkEl.href = `https://picsum.photos/1200?random=${randomNum}`; // Higher resolution for new tab
+                linkEl.target = "_blank"; // Open in new tab
+                linkEl.rel = "noopener noreferrer"; // Security best practice
+                linkEl.appendChild(newImgEl);
+                
+                imageContainerEl.appendChild(linkEl);
+            }
+        }
+
+        // Load initial images when the page loads
+        addNewImages();
     </script>
 </body>
 </html>
