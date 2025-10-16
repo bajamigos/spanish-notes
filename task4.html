@@ -6,7 +6,7 @@
     <title>Tarea 4 SIELE S4: Monólogo Corto | Grok Mode 🚀</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-        
+       
         body {
             margin: 0;
             padding: 40px 20px;
@@ -19,7 +19,7 @@
             flex-direction: column;
             align-items: center;
             position: relative;
-            overflow: auto; /* Fixed scrolling */
+            overflow: auto;
         }
         body::before {
             content: '';
@@ -30,7 +30,7 @@
             z-index: -1;
         }
         header {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             width: 100%;
             max-width: 800px;
         }
@@ -93,22 +93,6 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(29, 161, 242, 0.2);
         }
-        .nav-button {
-            display: block;
-            width: fit-content;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: transparent;
-            color: #FFFFFF;
-            border: 2px solid #1DA1F2;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .nav-button:hover {
-            background-color: #1DA1F2;
-            color: #000000;
-        }
         .contribute-section {
             margin: 40px 0;
         }
@@ -154,44 +138,144 @@
             color: #888888;
             width: 100%;
         }
+        /* Timer Styles */
+        .timer-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #1DA1F2;
+            border-radius: 15px;
+            padding: 15px;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .timer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(29, 161, 242, 0.2);
+        }
+        .timer-card h2 {
+            font-size: 20px;
+            margin: 0 0 10px 0;
+        }
+        .timer-display {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1DA1F2;
+            margin: 5px 0;
+            text-shadow: 0 0 5px rgba(29, 161, 242, 0.5);
+            font-family: 'Inter', sans-serif;
+        }
+        .timer-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .timer-button {
+            padding: 8px 16px;
+            background-color: transparent;
+            color: #FFFFFF;
+            border: 2px solid #1DA1F2;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .timer-button:hover {
+            background-color: #1DA1F2;
+            color: #000000;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Tarea 4 SIELE S4: Monólogo Corto</h1>
     </header>
-    
-    <a href="index.html" class="nav-button">Volver a Recursos</a>
-    
+
+    <!-- Timer Section -->
+    <div class="timer-card">
+        <h2>Temporizador</h2>
+        <div class="timer-display" id="timer">00:00</div>
+        <div class="timer-buttons">
+            <button class="timer-button" onclick="startTimer()">Iniciar</button>
+            <button class="timer-button" onclick="stopTimer()">Detener</button>
+            <button class="timer-button" onclick="resetTimer()">Reiniciar</button>
+        </div>
+    </div>
+   
     <div class="content-card">
         <h2>Descripción de la Tarea</h2>
         <p>Para la Tarea 4 del SIELE S4, el estudiante presenta un monólogo de 2 minutos en español sobre un tema amplio, practicando un discurso organizado.</p>
-        
+       
         <h2>Estructura del Ejercicio</h2>
         <ol>
             <li>Proporciona un tema</li>
-            <li>Permite 1–2 minutos para que el estudiante hable.</li>    
-            <li>En las flashcards (usando el botón "Add Flashcard" abajo), registra: (a) una corrección de gramática o coherencia, (b) 1–2 conectores discursivos avanzados (por ejemplo, "en primer lugar - firstly").</li>
+            <li>Permite 1–2 minutos para que el estudiante hable.</li>
+            <li>Con los botones 'Add Flashcard' y 'Add Feedback' abajo, registra: (a) una corrección de gramática o coherencia, (b) 1–2 conectores discursivos avanzados (por ejemplo, "en primer lugar - firstly").</li>
         </ol>
-        
+       
         <h2>Recursos</h2>
         <p>Selecciona temas de diversas áreas (por ejemplo, eventos actuales, ideas abstractas o escenarios hipotéticos).</p>
     </div>
-    
+   
     <div class="contribute-section">
         <div class="button-group">
             <button data-tally-open="nG2Jde" data-tally-hide-title="1" class="tally-button">Add Flashcard</button>
             <button data-tally-open="wo47OO" class="tally-button">Add Feedback</button>
         </div>
     </div>
-    
+   
     <div class="social-link">
         <a href="https://www.instagram.com/bajamigospanish">@bajamigospanish</a>
     </div>
-    
+   
     <footer>
     </footer>
-    
+   
     <script async src="https://tally.so/widgets/embed.js"></script>
+    <script>
+        let timer;
+        let seconds = 0;
+        let isRunning = false;
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timer = setInterval(() => {
+                    seconds++;
+                    updateTimerDisplay();
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            if (isRunning) {
+                isRunning = false;
+                clearInterval(timer);
+            }
+        }
+
+        function resetTimer() {
+            isRunning = false;
+            clearInterval(timer);
+            seconds = 0;
+            updateTimerDisplay();
+        }
+
+        // Initialize timer display
+        updateTimerDisplay();
+    </script>
 </body>
 </html>
