@@ -95,12 +95,24 @@
         }
         .contribute-section {
             margin: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .action-panel {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .button-group {
             display: flex;
-            justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
+            justify-content: center;
         }
         .tally-button {
             padding: 10px 20px;
@@ -114,6 +126,10 @@
             cursor: pointer;
             transition: background-color 0.3s;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .tally-button:hover {
             background-color: #1DA1F2;
@@ -138,57 +154,87 @@
             color: #888888;
             width: 100%;
         }
-        /* Timer Styles */
+
+        /* Timer Styles - Matching First Page */
         .timer-card {
             background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid #1DA1F2;
             border-radius: 15px;
-            padding: 15px;
-            width: 100%;
-            max-width: 400px;
-            margin: 10px auto;
+            padding: 8px 12px;
+            width: 240px;
+            height: 40px;
             backdrop-filter: blur(5px);
             transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: space-between;
+            gap: 6px;
         }
         .timer-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(29, 161, 242, 0.2);
         }
-        .timer-card h2 {
-            font-size: 20px;
-            margin: 0 0 10px 0;
-        }
         .timer-display {
-            font-size: 36px;
+            font-size: 18px;
             font-weight: 700;
             color: #1DA1F2;
-            margin: 5px 0;
-            text-shadow: 0 0 5px rgba(29, 161, 242, 0.5);
+            margin: 0;
+            text-shadow: 0 0 3px rgba(29, 161, 242, 0.5);
             font-family: 'Inter', sans-serif;
+            min-width: 50px;
         }
         .timer-buttons {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 6px;
+            align-items: center;
         }
         .timer-button {
-            padding: 8px 16px;
+            width: 28px;
+            height: 28px;
             background-color: transparent;
             color: #FFFFFF;
-            border: 2px solid #1DA1F2;
-            border-radius: 50px;
+            border: 1.5px solid #1DA1F2;
+            border-radius: 50%;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
         .timer-button:hover {
             background-color: #1DA1F2;
             color: #000000;
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(29, 161, 242, 0.3);
+        }
+        .timer-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .action-panel {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .timer-card {
+                width: 220px;
+                height: 38px;
+                padding: 6px 10px;
+                gap: 5px;
+            }
+            .timer-display {
+                font-size: 16px;
+                min-width: 45px;
+            }
+            .timer-button {
+                width: 26px;
+                height: 26px;
+                font-size: 11px;
+            }
         }
     </style>
 </head>
@@ -197,17 +243,6 @@
         <h1>Tarea 2 SIELE S4: Responder a Medios</h1>
     </header>
 
-    <!-- Timer Section -->
-    <div class="timer-card">
-        <h2>Temporizador</h2>
-        <div class="timer-display" id="timer">00:00</div>
-        <div class="timer-buttons">
-            <button class="timer-button" onclick="startTimer()">Iniciar</button>
-            <button class="timer-button" onclick="stopTimer()">Detener</button>
-            <button class="timer-button" onclick="resetTimer()">Reiniciar</button>
-        </div>
-    </div>
-   
     <div class="content-card">
         <h2>Descripción de la Tarea</h2>
         <p>Para la Tarea 2 del SIELE S4, el estudiante escucha un clip corto de audio o video y responde en español, practicando comprensión rápida y expresión.</p>
@@ -223,11 +258,25 @@
         <h2>Recursos</h2>
         <p>Busca clips en YouTube Shorts, MuyInteresante.mx, Instagram Reels, fragmento de noticias o podcasts.</p>
     </div>
-   
+
+    <!-- Action Panel with Timer and Buttons - Timer moved to bottom -->
     <div class="contribute-section">
-        <div class="button-group">
-            <button data-tally-open="nG2Jde" data-tally-hide-title="1" class="tally-button">Add Flashcard</button>
-            <button data sut-tally-open="wo47OO" class="tally-button">Add Feedback</button>
+        <div class="action-panel">
+            <!-- Timer with reduced gap - matching first page -->
+            <div class="timer-card">
+                <div class="timer-display" id="timer">00:00</div>
+                <div class="timer-buttons">
+                    <button class="timer-button" onclick="startTimer()" title="Iniciar">▶</button>
+                    <button class="timer-button" onclick="stopTimer()" title="Detener">⏸</button>
+                    <button class="timer-button" onclick="resetTimer()" title="Reiniciar">↺</button>
+                </div>
+            </div>
+            
+            <!-- Flashcard and Feedback Buttons -->
+            <div class="button-group">
+                <button data-tally-open="nG2Jde" data-tally-hide-title="1" class="tally-button">Add Flashcard</button>
+                <button data-tally-open="wo47OO" class="tally-button">Add Feedback</button>
+            </div>
         </div>
     </div>
    
