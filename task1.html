@@ -100,12 +100,24 @@
         }
         .contribute-section {
             margin: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .action-panel {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .button-group {
             display: flex;
-            justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
+            justify-content: center;
         }
         .tally-button {
             padding: 10px 20px;
@@ -119,6 +131,10 @@
             cursor: pointer;
             transition: background-color 0.3s;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .tally-button:hover {
             background-color: #1DA1F2;
@@ -147,109 +163,161 @@
             margin: 20px auto;
             max-width: 100%;
         }
-        /* Timer Styles */
+        /* Wider, Shorter Timer Styles with Reduced Gap */
         .timer-card {
             background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid #1DA1F2;
             border-radius: 15px;
-            padding: 15px;
-            width: 100%;
-            max-width: 400px;
-            margin: 10px auto;
+            padding: 8px 12px;
+            width: 240px;
+            height: 40px;
             backdrop-filter: blur(5px);
             transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: space-between;
+            gap: 6px; /* Reduced from 12px to 6px (half) */
         }
         .timer-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(29, 161, 242, 0.2);
         }
-        .timer-card h2 {
-            font-size: 20px;
-            margin: 0 0 10px 0;
-        }
         .timer-display {
-            font-size: 36px;
+            font-size: 18px;
             font-weight: 700;
             color: #1DA1F2;
-            margin: 5px 0;
-            text-shadow: 0 0 5px rgba(29, 161, 242, 0.5);
+            margin: 0;
+            text-shadow: 0 0 3px rgba(29, 161, 242, 0.5);
             font-family: 'Inter', sans-serif;
+            min-width: 50px;
         }
         .timer-buttons {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 6px;
+            align-items: center;
         }
         .timer-button {
-            padding: 8px 16px;
+            width: 28px;
+            height: 28px;
             background-color: transparent;
             color: #FFFFFF;
-            border: 2px solid #1DA1F2;
-            border-radius: 50px;
+            border: 1.5px solid #1DA1F2;
+            border-radius: 50%;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
         .timer-button:hover {
             background-color: #1DA1F2;
             color: #000000;
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(29, 161, 242, 0.3);
         }
-        /* Image Feed Styles */
+        .timer-button:active {
+            transform: scale(0.95);
+        }
+        /* Borderless Full-Size Image Card */
         .image-feed-card {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid #1DA1F2;
+            background-color: transparent;
+            border: none;
             border-radius: 20px;
-            padding: 20px;
+            padding: 0;
             width: 100%;
             max-width: 800px;
             margin: 20px auto;
-            backdrop-filter: blur(5px);
-            transition: transform 0.3s, box-shadow 0.3s;
+            height: 50vh;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.3s;
         }
         .image-feed-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(29, 161, 242, 0.2);
         }
         .image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 10px;
+            justify-content: center;
+            border-radius: 20px;
+            overflow: hidden;
         }
         .image-container img {
             width: 100%;
-            max-width: 600px;
-            height: auto;
-            border-radius: 10px;
+            height: 100%;
             object-fit: cover;
-            border: 2px solid #1DA1F2;
             transition: transform 0.3s;
         }
         .image-container img:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
         .new-image-button {
-            padding: 10px 20px;
-            background-color: #FFFFFF;
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            padding: 8px 16px;
+            background-color: rgba(255, 255, 255, 0.9);
             color: #000000;
-            border-radius: 50px;
-            font-size: 14px;
+            border-radius: 25px;
+            font-size: 12px;
             font-weight: bold;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin: 20px auto;
-            display: block;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 10;
         }
         .new-image-button:hover {
             background-color: #1DA1F2;
             color: #FFFFFF;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(29, 161, 242, 0.4);
+        }
+        .new-image-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .action-panel {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .timer-card {
+                width: 220px;
+                height: 38px;
+                padding: 6px 10px;
+                gap: 5px; /* Reduced gap for mobile too */
+            }
+            .timer-display {
+                font-size: 16px;
+                min-width: 45px;
+            }
+            .timer-button {
+                width: 26px;
+                height: 26px;
+                font-size: 11px;
+            }
+            .image-feed-card {
+                height: 40vh;
+                min-height: 300px;
+            }
+            .new-image-button {
+                bottom: 10px;
+                right: 10px;
+                padding: 6px 12px;
+                font-size: 11px;
+            }
         }
     </style>
 </head>
@@ -257,17 +325,7 @@
     <header>
         <h1>Tarea 1 SIELE S4: Describir Imágenes</h1>
     </header>
-    <!-- Timer Section -->
-    <div class="timer-card">
-        <h2>Temporizador</h2>
-        <div class="timer-display" id="timer">00:00</div>
-        <div class="timer-buttons">
-            <button class="timer-button" onclick="startTimer()">Iniciar</button>
-            <button class="timer-button" onclick="stopTimer()">Detener</button>
-            <button class="timer-button" onclick="resetTimer()">Reiniciar</button>
-        </div>
-    </div>
-  
+
     <div class="content-card">
         <h2>Descripción de la Tarea</h2>
         <p>Para la Tarea 1 del SIELE S4, el estudiante describe una imagen compleja en español para perfeccionar el vocabulario avanzado y la fluidez descriptiva.</p>
@@ -284,19 +342,32 @@
         <p>Usa Google Image Search, Pinterest, Memes, Instagram para encontrar imágenes ricas y evocadoras. También puedes usar las imágenes de la galería a continuación para practicar la descripción.</p>
     </div>
   
-    <!-- Image Feed Section -->
+    <!-- Borderless Full-Size Image Section -->
     <div class="image-feed-card">
-        <h2>Galería de Imágenes</h2>
         <div class="image-container" id="imageContainer">
             <!-- Single image will be added here via JavaScript -->
         </div>
         <button class="new-image-button" onclick="loadNewImage()">Nueva Imagen</button>
     </div>
-  
+
+    <!-- Action Panel with Timer and Buttons -->
     <div class="contribute-section">
-        <div class="button-group">
-            <button data-tally-open="nG2Jde" data-tally-hide-title="1" class="tally-button">Add Flashcard</button>
-            <button data-tally-open="wo47OO" class="tally-button">Add Feedback</button>
+        <div class="action-panel">
+            <!-- Timer with reduced gap -->
+            <div class="timer-card">
+                <div class="timer-display" id="timer">00:00</div>
+                <div class="timer-buttons">
+                    <button class="timer-button" onclick="startTimer()" title="Iniciar">▶</button>
+                    <button class="timer-button" onclick="stopTimer()" title="Detener">⏸</button>
+                    <button class="timer-button" onclick="resetTimer()" title="Reiniciar">↺</button>
+                </div>
+            </div>
+            
+            <!-- Flashcard and Feedback Buttons -->
+            <div class="button-group">
+                <button data-tally-open="nG2Jde" data-tally-hide-title="1" class="tally-button">Add Flashcard</button>
+                <button data-tally-open="wo47OO" class="tally-button">Add Feedback</button>
+            </div>
         </div>
     </div>
   
@@ -340,27 +411,26 @@
             seconds = 0;
             updateTimerDisplay();
         }
-        // Initialize timer display
         updateTimerDisplay();
 
         // Image Feed Script
         const imageContainerEl = document.getElementById("imageContainer");
 
         function loadNewImage() {
-            // Clear previous image
+            // Clear previous image and button
             imageContainerEl.innerHTML = '';
             
             // Create new image
             const newImgEl = document.createElement("img");
             const randomNum = Math.floor(Math.random() * 2000);
-            newImgEl.src = `https://picsum.photos/600/400?random=${randomNum}`;
+            newImgEl.src = `https://picsum.photos/1200/800?random=${randomNum}`;
             newImgEl.alt = "Imagen aleatoria para descripción";
             
             // Wrap image in an anchor tag to open in new tab
             const linkEl = document.createElement("a");
-            linkEl.href = `https://picsum.photos/1200/800?random=${randomNum}`; // Higher resolution for new tab
-            linkEl.target = "_blank"; // Open in new tab
-            linkEl.rel = "noopener noreferrer"; // Security best practice
+            linkEl.href = `https://picsum.photos/1200/800?random=${randomNum}`;
+            linkEl.target = "_blank";
+            linkEl.rel = "noopener noreferrer";
             linkEl.appendChild(newImgEl);
             
             imageContainerEl.appendChild(linkEl);
