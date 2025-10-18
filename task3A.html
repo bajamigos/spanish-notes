@@ -342,7 +342,7 @@ function stopRecording() {
 function uploadAudio(blob) {
     const formData = new FormData();
     formData.append('file', blob, 'recording.wav');
-    fetch('https://script.google.com/macros/s/AKfycbyGiia5gPyzh1nV0a0NpOkp286qMrw9DhpB-mYoiQP2JecBKfRqRoATUf3YxoT1rO5GNQ/exec', { method: 'POST', body: formData })
+    fetch('https://script.google.com/macros/s/AKfycbwbPkiabXBE1hRXVomxpOxubpoiZ6xZtoi1YAT76ApicpHU482T_uHNWWbiGr8igd-Blg/exec', { method: 'POST', body: formData })
         .then(response => response.json())
         .then(result => alert('Audio sent! Link added to sheet.'))
         .catch(error => alert('Error: ' + error));
