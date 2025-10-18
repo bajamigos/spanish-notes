@@ -1,4 +1,43 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +64,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyYWRpYWxHcmFkaWVudCBpZD0iZ3JhZCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwMDAwMDsiLz48c3RvcCBvZmZzZXQ9IjUwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwMDAwMDtvcGFjaXR5OjAuNSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwMDAwMDsiLz48L3JhZGlhbEdncmFkaWVudD48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIi8+PC9zdmc+') repeat;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyYWRpYWxHcmFkaWVudCBpZD0iZ3JhZCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwMDAwMDsiLz48c3RvcCBvZmZzZXQ9IjUwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwMDAwMDtvcGFjaXR5OjAuNSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwMDAwMDsiLz48L3JhZGlhbEdyYWRpZW50PjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiLz48L3N2Zz4=') repeat;
             opacity: 0.1;
             z-index: -1;
         }
@@ -149,60 +188,47 @@
             color: #FFFFFF;
         }
         footer {
-            margin-top: 20px;
+            margin-top: auto;
             font-size: 12px;
             color: #888888;
-            width: 100%;
+            padding-top: 20px;
         }
-
-        /* Timer Styles - Matching Previous Pages */
         .timer-card {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid #1DA1F2;
-            border-radius: 15px;
-            padding: 8px 12px;
-            width: 240px;
-            height: 40px;
-            backdrop-filter: blur(5px);
-            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             align-items: center;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #1DA1F2;
+            border-radius: 50px;
+            padding: 8px 12px;
+            gap: 10px;
+            width: 200px;
+            height: 36px;
             justify-content: space-between;
-            gap: 6px;
-        }
-        .timer-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(29, 161, 242, 0.2);
         }
         .timer-display {
             font-size: 18px;
-            font-weight: 700;
-            color: #1DA1F2;
-            margin: 0;
-            text-shadow: 0 0 3px rgba(29, 161, 242, 0.5);
-            font-family: 'Inter', sans-serif;
             min-width: 50px;
+            color: #FFFFFF;
+            background-color: transparent;
+            border: none;
         }
         .timer-buttons {
             display: flex;
-            gap: 6px;
-            align-items: center;
+            gap: 5px;
         }
         .timer-button {
             width: 28px;
             height: 28px;
             background-color: transparent;
-            color: #FFFFFF;
-            border: 1.5px solid #1DA1F2;
+            color: #1DA1F2;
+            border: 1px solid #1DA1F2;
             border-radius: 50%;
             font-size: 12px;
-            font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1;
         }
         .timer-button:hover {
             background-color: #1DA1F2;
@@ -236,6 +262,76 @@
                 font-size: 11px;
             }
         }
+
+        /* Styles for debate generator */
+        .debate-generator {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #1DA1F2;
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            backdrop-filter: blur(5px);
+            text-align: center;
+        }
+        .debate-generator h3 {
+            font-size: 20px;
+            color: #1DA1F2;
+            margin-bottom: 15px;
+        }
+        .generator-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        #category-select {
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            border: 1px solid #1DA1F2;
+            border-radius: 50px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #category-select:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        #generate-button {
+            padding: 10px 20px;
+            background-color: #FFFFFF;
+            color: #000000;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        #generate-button:hover {
+            background-color: #1DA1F2;
+            color: #FFFFFF;
+        }
+        #debate-output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #E0E0E0;
+            text-align: left;
+        }
+        #debate-category {
+            font-weight: bold;
+            color: #1DA1F2;
+        }
+        #debate-prompt {
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -258,6 +354,22 @@
        
         <h2>Recursos</h2>
         <p>Usa sitios de noticias (por ejemplo, El País, BBC Mundo) o temas en tendencia en X para ideas frescas.</p>
+    </div>
+
+    <!-- Debate Prompt Generator Section -->
+    <div class="debate-generator">
+        <h3>Generador de Prompts de Debate Aleatorios</h3>
+        <div class="generator-controls">
+            <select id="category-select">
+                <option value="">Selecciona una Categoría (o Aleatorio)</option>
+                <!-- Categories will be populated here via JS -->
+            </select>
+            <button id="generate-button">Generar Prompt</button>
+        </div>
+        <div id="debate-output">
+            <p id="debate-category"></p>
+            <p id="debate-prompt"></p>
+        </div>
     </div>
 
     <!-- Action Panel with Timer and Buttons - Timer moved to bottom -->
@@ -327,6 +439,74 @@
 
         // Initialize timer display
         updateTimerDisplay();
+
+        // Debate Generator Script
+        const categorySelect = document.getElementById('category-select');
+        const generateButton = document.getElementById('generate-button');
+        const debateCategory = document.getElementById('debate-category');
+        const debatePrompt = document.getElementById('debate-prompt');
+
+        let debateData = []; // To store all prompts
+
+        async function loadDebateTopics() {
+            try {
+                const response = await fetch('debatetopics.csv');
+                const csvText = await response.text();
+                
+                // Parse CSV
+                const lines = csvText.trim().split('\n').slice(1); // Skip header
+                debateData = lines.map(line => {
+                    const [category, prompt] = line.split(',');
+                    return { category, prompt };
+                });
+                
+                // Get unique categories
+                const uniqueCategories = [...new Set(debateData.map(item => item.category))];
+                
+                // Populate dropdown
+                uniqueCategories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat;
+                    categorySelect.appendChild(option);
+                });
+                
+            } catch (error) {
+                console.error('Error loading CSV:', error);
+                debateCategory.textContent = 'Error al cargar las categorías.';
+            }
+        }
+
+        function generatePrompt() {
+            const selectedCategory = categorySelect.value;
+            
+            let filteredPrompts;
+            if (!selectedCategory) {
+                // Random from all
+                filteredPrompts = debateData;
+            } else {
+                // Filter by category
+                filteredPrompts = debateData.filter(item => item.category === selectedCategory);
+            }
+            
+            if (filteredPrompts.length === 0) {
+                debateCategory.textContent = 'No hay prompts disponibles.';
+                debatePrompt.textContent = '';
+                return;
+            }
+            
+            // Pick random prompt
+            const randomItem = filteredPrompts[Math.floor(Math.random() * filteredPrompts.length)];
+            
+            debateCategory.textContent = `Categoría: ${randomItem.category}`;
+            debatePrompt.textContent = `Prompt: ${randomItem.prompt}`;
+        }
+
+        // Load topics on page load
+        loadDebateTopics();
+
+        // Add event listener to button
+        generateButton.addEventListener('click', generatePrompt);
     </script>
 </body>
 </html>
